@@ -8,7 +8,7 @@
 [![Methodology](https://img.shields.io/badge/Methodology-OHEOU--KU-purple)]()
 
 **一套严谨、证据驱动的自主智能体方法论。**  
-**由 CTorch Agent 实战验证并开源。**
+**由 CTorch Agent 验证。**
 
 <p align="center">
   <b>观察 → 假设 → 实验 → 观测更新 → 知识更新</b><br/>
