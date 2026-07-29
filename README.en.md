@@ -4,10 +4,11 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
 [![Prompts](https://img.shields.io/badge/Prompts-30%20core-green)](./core)
-[![Examples](https://img.shields.io/badge/Examples-3-orange)](./examples)
+[![Examples](https://img.shields.io/badge/Examples-12-orange)](./examples)
 [![Methodology](https://img.shields.io/badge/Methodology-OHEOU--KU-purple)]()
 
-**A rigorous, evidence-driven methodology for autonomous agents.**
+**A rigorous, evidence-driven methodology for autonomous agents.**  
+**Battle-tested as CTorch Agent, now open-sourced.**
 
 <p align="center">
   <b>Observation → Hypothesis → Experiment → Observation Update → Knowledge Update</b><br/>
@@ -93,6 +94,12 @@ Step 6: During idle time, run PEL to iterate and optimize prompts (at least 2 ro
 
 For other domains, please refer to `ADAPTATION_GUIDE.md` for customization, and consider contributing your adapted use cases.
 
+## Origin
+
+`Agentic Method` was originally designed as the internal workflow for **CTorch Agent**, used to constrain agent reasoning during code review, bug diagnosis, performance optimization, and architecture decisions for the CTorch deep-learning framework. After multiple rounds of battle-testing, we abstracted the project-agnostic methodology, desensitized it, and open-sourced it.
+
+CTorch Agent remains a **reference implementation** of Agentic Method: it has proven the value of this methodology in high-stakes domains such as systems programming, HPC backends, and automatic differentiation. If you work in similar engineering fields, the desensitized cases in `examples/mems/` and `examples/reports/` are a good starting point.
+
 ## Repository Structure
 
 ```
@@ -116,12 +123,21 @@ agentic-method/
 │   ├── world-model-learning-prompt.md
 │   └── ... and 30 core prompts total
 ├── main.md                      # Auto-generated prompt directory index
-├── examples/                    # 3 example adapters
+├── examples/                    # 12 examples (adapters + MEMs + reports)
 │   ├── software-engineering-review-example.md
 │   ├── research-survey-example.md
-│   └── large-model-inference-gap-example.md
-├── reports/                     # Example PEL daily report
-│   └── example-pel-daily-report.md
+│   ├── large-model-inference-gap-example.md
+│   ├── mems/                    # 6 desensitized transferable knowledge examples
+│   │   ├── counterfactual-single-variable-principle.md
+│   │   ├── semantic-change-full-regression.md
+│   │   ├── prompt-evolution-failures.md
+│   │   ├── operator-addition-abi-checklist.md
+│   │   ├── backend-dtype-constraint.md
+│   │   └── inplace-memory-overlap.md
+│   └── reports/                 # 3 desensitized review/evolution report examples
+│       ├── prompt-evolution-daily-report-example.md
+│       ├── new-prompts-reflection-example.md
+│       └── large-model-inference-gap-analysis.md
 ├── .github/                     # Issue / PR templates
 │   ├── ISSUE_TEMPLATE/
 │   └── pull_request_template.md

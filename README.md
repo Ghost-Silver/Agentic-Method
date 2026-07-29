@@ -4,10 +4,11 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
 [![Prompts](https://img.shields.io/badge/Prompts-30%20core-green)](./core)
-[![Examples](https://img.shields.io/badge/Examples-3-orange)](./examples)
+[![Examples](https://img.shields.io/badge/Examples-12-orange)](./examples)
 [![Methodology](https://img.shields.io/badge/Methodology-OHEOU--KU-purple)]()
 
-**一套严谨、证据驱动的自主智能体方法论。**
+**一套严谨、证据驱动的自主智能体方法论。**  
+**由 CTorch Agent 实战验证并开源。**
 
 <p align="center">
   <b>观察 → 假设 → 实验 → 观测更新 → 知识更新</b><br/>
@@ -93,6 +94,12 @@ Step 6: 在空闲时间运行 PEL，迭代优化 prompt（建议至少 2 轮）
 
 对于其他领域，欢迎参考 `ADAPTATION_GUIDE.md` 进行适配，也欢迎贡献你的适配案例。
 
+## 项目缘起
+
+`Agentic Method` 最初是为 **CTorch Agent** 设计的一套内部工作流，用于在 CTorch 深度学习框架的代码审查、Bug 排查、性能优化和架构决策中约束 Agent 的推理过程。经过多轮实战验证后，我们将其中与项目无关的通用方法论抽象出来，脱敏并开源。
+
+CTorch Agent 仍然是 Agentic Method 的一个**参考实现**：它在系统编程、HPC 后端、自动微分等高风险场景中证明了这套方法论的价值。如果你在类似的工程领域工作，可以直接参考 `examples/mems/` 和 `examples/reports/` 中的脱敏案例。
+
 ## 仓库结构
 
 ```
@@ -116,12 +123,21 @@ agentic-method/
 │   ├── world-model-learning-prompt.md
 │   └── ... 等 30 个核心 prompt
 ├── main.md                      # 自动生成的 prompt 目录索引
-├── examples/                    # 3 个适配示例
+├── examples/                    # 12 个示例（适配案例 + MEM + 报告）
 │   ├── software-engineering-review-example.md
 │   ├── research-survey-example.md
-│   └── large-model-inference-gap-example.md
-├── reports/                     # PEL 日报示例
-│   └── example-pel-daily-report.md
+│   ├── large-model-inference-gap-example.md
+│   ├── mems/                    # 6 个脱敏后的可迁移知识示例
+│   │   ├── counterfactual-single-variable-principle.md
+│   │   ├── semantic-change-full-regression.md
+│   │   ├── prompt-evolution-failures.md
+│   │   ├── operator-addition-abi-checklist.md
+│   │   ├── backend-dtype-constraint.md
+│   │   └── inplace-memory-overlap.md
+│   └── reports/                 # 3 个脱敏后的复盘/进化报告示例
+│       ├── prompt-evolution-daily-report-example.md
+│       ├── new-prompts-reflection-example.md
+│       └── large-model-inference-gap-analysis.md
 ├── .github/                     # Issue / PR 模板
 │   ├── ISSUE_TEMPLATE/
 │   └── pull_request_template.md
