@@ -64,32 +64,48 @@ Each task has 3-5 test cases. Cases are stored in `benchmarks/tasks/`.
 
 ---
 
-## 4. Baselines
+## 4. Cost Considerations
 
-| Baseline ID | Description | Purpose |
-|-------------|-------------|---------|
-| B0 — Zero-shot | Task description only. | Measures model native capability without scaffolding. |
-| B1 — Generic CoT | "Think step by step and explain your reasoning." | Measures simple reasoning scaffolding. |
-| B2 — Agentic Method (seed) | Use raw `core/` prompts without PEL. | Measures core methodology value. |
-| B3 — Agentic Method (PEL-v1) | Use prompts after one PEL iteration. | Measures evolution benefit. |
+The **cheapest benchmark path** is our custom benchmark (`benchmarks/tasks/`):
 
----
+- No environment setup (no Docker, no repository cloning, no test execution).
+- Synthetic tasks with text input/output.
+- Human scoring via rubric; no automatic test harness required.
+- Recommended public supplement: **FOLIO** or **StrategyQA** for logical reasoning — these are multiple-choice/hard-question datasets with no environment dependency.
+
+Higher-cost options like SWE-bench require Docker, real GitHub PRs, and test execution. They should only be introduced after the custom benchmark demonstrates value.
 
 ## 5. Models Under Test
 
-We recommend testing on a spectrum of capability and cost:
+### Phase 1 — Control Group (Ordinary Models)
+
+| Model | Tier | Role | Rationale |
+|-------|------|------|-----------|
+| **Kimi-K2.7-Code** | Top-tier coding | Control / full protocol | Strong Chinese + code reasoning; tests whether Agentic Method helps even capable models |
+| **MiniMax-M3** | Top-tier general | Control / full protocol | Another strong baseline for cross-checking model-specific effects |
+
+These models will run both the **B1 Generic CoT** baseline and, in later phases, the **B2 Agentic Method** experimental prompt.
+
+### Later Phases
 
 | Tier | Example Models | Role |
 |------|----------------|------|
-| Top-tier | GPT-4o, Claude 3.5 Sonnet, DeepSeek-V3 | Main orchestrator / full protocol |
-| Mid-tier | Claude 3 Haiku, GPT-4o-mini, Qwen2.5-72B | Sub-agent / abridged protocol |
-| Open-weight | Llama-3.1-70B, Qwen2.5-32B, DeepSeek-V2.5 | Local / cost-sensitive evaluation |
+| Top-tier | GPT-4o, Claude 3.5 Sonnet, DeepSeek-V3 | Cross-framework validation |
+| Mid-tier | Claude 3 Haiku, GPT-4o-mini, Qwen2.5-72B | Cost-sensitive sub-agent evaluation |
+| Open-weight | Llama-3.1-70B, Qwen2.5-32B | Local deployment |
 
-**Note**: For Phase 1, we will test only 2 models to control cost.
+## 6. Baselines
+
+| Baseline ID | Description | Prompt File | Purpose |
+|-------------|-------------|-------------|---------|
+| B0 — Zero-shot | Task description only. | Inline | Measures model native capability without scaffolding. |
+| B1 — Generic CoT | "Think step by step and explain your reasoning." | `benchmarks/prompts/baseline-task-prompt.md` | Measures simple reasoning scaffolding. |
+| B2 — Agentic Method (seed) | Use raw `core/` prompts without PEL. | `core/experimental-design-prompt.md`, etc. | Measures core methodology value. |
+| B3 — Agentic Method (PEL-v1) | Use prompts after one PEL iteration. | Evolved variants | Measures evolution benefit. |
 
 ---
 
-## 6. Evaluation Rubric
+## 7. Evaluation Rubric
 
 Each output is scored on a 0-5 scale across 6 dimensions.
 
@@ -106,7 +122,7 @@ Scoring is performed by a human rater, with a second rater auditing a 20% sample
 
 ---
 
-## 7. Data Collection Format
+## 8. Data Collection Format
 
 Each run produces a JSON file:
 
@@ -136,17 +152,29 @@ Each run produces a JSON file:
 
 ---
 
-## 8. Execution Plan
+## 9. Execution Plan
 
 ### Phase 1 — Pilot (2 weeks)
 
 **Scope**:
 - Tasks: Bug Diagnosis + Experimental Design
-- Baselines: B0, B1, B2
-- Models: 2 (one top-tier, one mid-tier)
+- Baselines: B0, B1
+- Models: Kimi-K2.7-Code, MiniMax-M3
 - Cases: 3 per task
 
-**Deliverable**: `benchmarks/results/phase-1-report.md`
+**Deliverable**: `benchmarks/results/phase-1-control-report.md`
+
+**Success Gate**: Establish stable B0/B1 scores for the two control models; no comparison to Agentic Method yet.
+
+### Phase 1.5 — Agentic Method Pilot (2 weeks)
+
+**Scope**:
+- Tasks: Bug Diagnosis + Experimental Design
+- Baselines: B2 (Agentic Method seed)
+- Models: Kimi-K2.7-Code, MiniMax-M3
+- Cases: 3 per task
+
+**Deliverable**: `benchmarks/results/phase-1-experimental-report.md`
 
 **Success Gate**: Agentic Method (B2) shows ≥15% improvement in average score over B1 on at least one task.
 
@@ -172,21 +200,22 @@ Each run produces a JSON file:
 
 ---
 
-## 9. Expected Outputs
+## 10. Expected Outputs
 
 1. `benchmarks/tasks/*.md` — task definitions and ground-truth rubrics
-2. `benchmarks/scripts/runner.py` — automated benchmark runner
-3. `benchmarks/results/phase-{1,2,3}-report.md` — result reports
-4. `benchmarks/rubric.md` — detailed scoring guide
-5. Updated `README.md` badge: `Benchmarks`
+2. `benchmarks/prompts/baseline-task-prompt.md` — baseline prompt for control models
+3. `benchmarks/scripts/runner.py` — automated benchmark runner
+4. `benchmarks/results/phase-{1,1.5,2,3}-report.md` — result reports
+5. `benchmarks/rubric.md` — detailed scoring guide
+6. Updated `README.md` badge: `Benchmarks`
 
 ---
 
-## 10. Risks & Mitigations
+## 11. Risks & Mitigations
 
 | Risk | Impact | Mitigation |
 |------|--------|------------|
-| High token cost | Medium | Start with 2 tasks × 3 cases; use cheaper models for B0/B1. |
+| High token cost | Medium | Start with 2 tasks × 3 cases; B0/B1 are short prompts. |
 | Subjective scoring | Medium | Two raters + inter-rater reliability check; publish rubric. |
 | Model API drift | Low | Pin exact model versions in result files. |
 | Prompt leakage in training data | Low | Use synthetic or already-public code snippets. |
@@ -194,15 +223,15 @@ Each run produces a JSON file:
 
 ---
 
-## 11. Open Questions for Review
+## 12. Open Questions for Review
 
 1. Should we include a **human baseline** (expert engineer/researcher score) for calibration?
 2. Should we publish raw outputs, or only aggregated scores?
 3. Do we want a **leaderboard** format in the README?
-4. Which two models should Phase 1 use?
+4. Which public benchmark (FOLIO / StrategyQA) should we add first?
 
 ---
 
-## 12. Decision Gate
+## 13. Decision Gate
 
-**(HITL)** This plan must be approved before execution. Once approved, the first step is to create 3 pilot task cases and the scoring rubric.
+**(HITL)** This plan must be approved before execution. Once approved, the first step is to run Phase 1 control group on Kimi-K2.7-Code and MiniMax-M3 using `benchmarks/prompts/baseline-task-prompt.md`.
