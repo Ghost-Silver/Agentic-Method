@@ -5,6 +5,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
 [![Prompts](https://img.shields.io/badge/Prompts-30%20core-green)](./core)
 [![Examples](https://img.shields.io/badge/Examples-12-orange)](./examples)
+[![Benchmarks](https://img.shields.io/badge/Benchmarks-Plan%20Draft-yellow)](./benchmarks)
 [![Methodology](https://img.shields.io/badge/Methodology-OHEOU--KU-purple)]()
 
 **A rigorous, evidence-driven methodology for autonomous agents.**  
@@ -100,6 +101,20 @@ For other domains, please refer to `ADAPTATION_GUIDE.md` for customization, and 
 
 CTorch Agent remains a **reference implementation** of Agentic Method: it has proven the value of this methodology in high-stakes domains such as systems programming, HPC backends, and automatic differentiation. If you work in similar engineering fields, the desensitized cases in `examples/mems/` and `examples/reports/` are a good starting point.
 
+## Benchmarks & Evidence
+
+We care about measurable evidence. The `benchmarks/` directory contains:
+
+- `plan.md`: a three-phase benchmark plan (Pilot → Breadth → Evolution)
+- `tasks/`: reusable evaluation tasks with ground-truth rubrics
+- `rubric.md`: a six-dimension scoring guide (task success, DSL compliance, hypothesis quality, evidence grounding, logical soundness, efficiency)
+- `scripts/runner.py`: an extensible benchmark runner scaffold
+- `results/`: where raw results and reports will be stored
+
+Research questions include: Does Agentic Method outperform zero-shot and generic CoT prompts? How does it scale across model sizes? Does PEL evolution actually improve prompt quality?
+
+Current status: **plan draft**, awaiting human approval before Phase 1 Pilot execution.
+
 ## Repository Structure
 
 ```
@@ -138,6 +153,11 @@ agentic-method/
 │       ├── prompt-evolution-daily-report-example.md
 │       ├── new-prompts-reflection-example.md
 │       └── large-model-inference-gap-analysis.md
+├── benchmarks/                  # Benchmark plan, tasks, rubric, and runner
+│   ├── plan.md
+│   ├── tasks/
+│   ├── rubric.md
+│   └── scripts/
 ├── .github/                     # Issue / PR templates
 │   ├── ISSUE_TEMPLATE/
 │   └── pull_request_template.md

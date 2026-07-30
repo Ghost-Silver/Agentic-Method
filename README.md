@@ -5,6 +5,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
 [![Prompts](https://img.shields.io/badge/Prompts-30%20core-green)](./core)
 [![Examples](https://img.shields.io/badge/Examples-12-orange)](./examples)
+[![Benchmarks](https://img.shields.io/badge/Benchmarks-Plan%20Draft-yellow)](./benchmarks)
 [![Methodology](https://img.shields.io/badge/Methodology-OHEOU--KU-purple)]()
 
 **一套严谨、证据驱动的自主智能体方法论。**  
@@ -100,6 +101,20 @@ Step 6: 在空闲时间运行 PEL，迭代优化 prompt（建议至少 2 轮）
 
 CTorch Agent 仍然是 Agentic Method 的一个**参考实现**：它在系统编程、HPC 后端、自动微分等高风险场景中证明了这套方法论的价值。如果你在类似的工程领域工作，可以直接参考 `examples/mems/` 和 `examples/reports/` 中的脱敏案例。
 
+## 评测与证据
+
+我们非常重视可量化的证据。`benchmarks/` 目录下包含：
+
+- `plan.md`：三阶段 benchmark 计划（Pilot → Breadth → Evolution）
+- `tasks/`：可复用的评测任务与标准答案 rubric
+- `rubric.md`：六维度评分标准（任务成功率、DSL 合规、假设质量、证据 grounding、逻辑严密性、效率）
+- `scripts/runner.py`：可扩展的 benchmark runner 脚手架
+- `results/`：未来存放原始结果与报告
+
+研究问题包括：Agentic Method 是否优于零提示和通用 CoT？不同规模模型表现如何？PEL 进化是否真正提升 prompt 质量？
+
+当前状态：**计划草案**，等待人类批准后执行 Phase 1 Pilot。
+
 ## 仓库结构
 
 ```
@@ -138,6 +153,11 @@ agentic-method/
 │       ├── prompt-evolution-daily-report-example.md
 │       ├── new-prompts-reflection-example.md
 │       └── large-model-inference-gap-analysis.md
+├── benchmarks/                  # 评测计划、任务、评分标准与 runner
+│   ├── plan.md
+│   ├── tasks/
+│   ├── rubric.md
+│   └── scripts/
 ├── .github/                     # Issue / PR 模板
 │   ├── ISSUE_TEMPLATE/
 │   └── pull_request_template.md
